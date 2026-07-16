@@ -79,7 +79,20 @@ def list_accounts():
 # READ AN ACCOUNT
 ######################################################################
 
-# ... place you code here to READ an account ...
+@app.route("/accounts/<int:account_id>", methods=["GET"])
+def read(account_id):
+    """
+    Read an Account
+    This endpoint will return a single Account
+    """
+    app.logger.info("Request to retrieve Account with id [%s]", account_id)
+
+    account = Account.find(account_id)
+
+    if account is None:
+        return jsonify({"error": "Account not found"}), status.HTTP_404_NOT_FOUND
+    
+    return jsonify(account.serialize()), status.HTTP_200_OK
 
 
 ######################################################################
