@@ -124,3 +124,30 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
+    def test_get_account_list(self):
+        """It should Get a list of Accounts"""
+        self._create_accounts(5)
+        resp = self.client.get(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 5)
+
+    def test_get_empty_account_list(self):
+        """It should return an empty list when there are no Accounts"""
+        resp = self.client.get(BASE_URL)
+
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        data = resp.get_json()
+        self.assertEqual(len(data), 0)
+        self.assertIsInstance(data, list)
+
+    def test_get_account_list_returns_json(self):
+        """It should return JSON content"""
+        self._create_accounts(3)
+
+        resp = self.client.get(BASE_URL)
+
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        self.assertEqual(resp.content_type, "application/json")
+
