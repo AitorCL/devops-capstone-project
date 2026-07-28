@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: accounts
   name: accounts
@@ -10,19 +9,19 @@ spec:
   selector:
     matchLabels:
       app: accounts
-  strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: accounts
     spec:
       containers:
-      - image: us.icr.io/sn-labs-aitorcardona/accounts:1
-        name: accounts
-        resources: {}
+      - name: accounts
+        image: us.icr.io/sn-labs-aitorcardona/accounts:1
 
-      env:
+        ports:
+        - containerPort: 8080
+
+        env:
         - name: DATABASE_HOST
           value: postgresql
         - name: DATABASE_NAME
@@ -40,4 +39,3 @@ spec:
             secretKeyRef:
               name: postgresql
               key: database-user
-status: {}
